@@ -1,58 +1,7 @@
 import React, { useState } from "react";
 
-const researchAreas = [
-  {
-    title: "Artificial Intelligence & ML",
-    description: "Focusing on deep learning architectures, generative adversarial networks, and natural language processing to solve complex reasoning tasks."
-  },
-  {
-    title: "Cybersecurity & Cryptography",
-    description: "Developing robust cryptographic protocols and analyzing systematic vulnerabilities in distributed systems and cloud networks."
-  },
-  {
-    title: "Data Science & Analytics",
-    description: "Applying statistical models and big data frameworks to extract meaningful insights from massive, unstructured datasets."
-  },
-  {
-    title: "Human-Computer Interaction",
-    description: "Designing intuitive interfaces and studying the psychological impact of interactive digital environments."
-  },
-  {
-    title: "Internet of Things (IoT)",
-    description: "Building scalable sensor architectures and edge computing solutions for smart cities and industrial automation."
-  },
-  {
-    title: "Quantum Computing",
-    description: "Exploring quantum algorithms and their theoretical applications in fundamentally solving NP-hard problems."
-  }
-];
-
-const publications = [
-  {
-    title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
-    authors: "Dr. Neha Verma, A. Kumar",
-    venue: "IEEE Transactions on Wireless Communications",
-    year: "2025"
-  },
-  {
-    title: "Adversarial Robustness in Large Language Models via Dynamic Prompting",
-    authors: "Dr. Amit Sharma, R. Desai",
-    venue: "NeurIPS",
-    year: "2025"
-  },
-  {
-    title: "Quantum-Resistant Key Exchange Mechanisms for Edge Networks",
-    authors: "Dr. Rajesh Kumar",
-    venue: "ACM Conference on Computer and Communications Security (CCS)",
-    year: "2024"
-  },
-  {
-    title: "Scalable Traffic Analysis in Software-Defined Networking",
-    authors: "Dr. Neha Verma",
-    venue: "Journal of Network and Computer Applications",
-    year: "2024"
-  }
-];
+import researchAreas from "../data/researchAreasData";
+import publications from "../data/publicationsData";
 
 
 
