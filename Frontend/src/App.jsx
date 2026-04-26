@@ -20,6 +20,9 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const AdminPanel = lazy(() => import("./pages/admin/AdminPanel"));
 const AdminRoute = lazy(() => import("./routes/AdminRoute"));
+const FacultyList = lazy(() => import("./pages/admin/faculty/FacultyList.jsx"));
+const AddFaculty = lazy(() => import("./pages/admin/faculty/AddFaculty.jsx"));
+const EditFaculty = lazy(() => import("./pages/admin/faculty/EditFaculty.jsx"));
 import EventsList from "./pages/admin/events/EventsList.jsx";
 import AddEvent from "./pages/admin/events/AddEvent.jsx";
 import EditEvent from "./pages/admin/events/EditEvent.jsx";
@@ -56,7 +59,9 @@ function App() {
                   <Route path="events/add" element={<AddEvent />} />
                   <Route path="events/edit/:id" element={<EditEvent />} />
                   <Route path="news" element={<div>News Management</div>} />
-                  <Route path="faculty" element={<div>Faculty Management</div>} />
+                  <Route path="faculty" element={<FacultyList />} />
+                  <Route path="faculty/add" element={<AddFaculty />} />
+                  <Route path="faculty/edit/:id" element={<EditFaculty />} />
                   <Route path="projects" element={<div>Projects Management</div>} />
                 </Route>
               </Route>

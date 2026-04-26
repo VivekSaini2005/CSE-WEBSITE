@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, facultyController.createFaculty);
 
 router.route('/:id')
+    .get(facultyController.getFacultyById)
     .put(protect, isAdmin, facultyController.updateFaculty)
     .delete(protect, isAdmin, facultyController.deleteFaculty);
 

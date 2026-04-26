@@ -10,6 +10,13 @@ const facultySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    department: {
+      type: String,
+      default: 'CSE',
+    },
+    email: {
+      type: String,
+    },
     specialization: {
       type: String,
     },
