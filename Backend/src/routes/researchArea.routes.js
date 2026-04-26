@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, researchAreaController.createResearchArea);
 
 router.route('/:id')
+    .get(researchAreaController.getResearchAreaById)
     .put(protect, isAdmin, researchAreaController.updateResearchArea)
     .delete(protect, isAdmin, researchAreaController.deleteResearchArea);
 

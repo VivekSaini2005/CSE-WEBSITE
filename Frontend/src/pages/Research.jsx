@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchGuides } from "../api/admin/guideService";
 import { fetchPublications } from "../api/admin/publicationService";
+import { fetchResearchAreas } from "../api/admin/researchAreaService";
 
-import researchAreas from "../data/researchAreasData";
+// import researchAreas from "../data/researchAreasData";
 // import publications from "../data/publicationsData";
 
 
@@ -93,6 +94,9 @@ const Research = () => {
   const [pubs, setPubs] = useState([]);
   const [loadingPubs, setLoadingPubs] = useState(false);
   const [pubsError, setPubsError] = useState(null);
+  const [areas, setAreas] = useState([]);
+  const [loadingAreas, setLoadingAreas] = useState(false);
+  const [areasError, setAreasError] = useState(null);
 
   useEffect(() => {
     const loadGuides = async () => {
@@ -132,6 +136,24 @@ const Research = () => {
 
     if (activeTab === "All" || activeTab === "Publications") {
       loadPubs();
+    }
+
+    const loadAreas = async () => {
+      setLoadingAreas(true);
+      setAreasError(null);
+      try {
+        const response = await fetchResearchAreas();
+        setAreas(response.data || []);
+      } catch (err) {
+        console.error("Error fetching research areas:", err);
+        setAreasError("Failed to load research areas.");
+      } finally {
+        setLoadingAreas(false);
+      }
+    };
+
+    if (activeTab === "All" || activeTab === "Research Areas") {
+      loadAreas();
     }
   }, [activeTab]);
 
@@ -178,12 +200,27 @@ const Research = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {researchAreas.map((area, idx) => (
-                <div key={idx} className="bg-white p-6 rounded-lg shadow-soft border border-slate-100 hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group">
-                  <h4 className="text-lg font-bold text-primary mb-3 font-heading">{area.title}</h4>
-                  <p className="text-slate-600 text-sm leading-relaxed">{area.description}</p>
+              {loadingAreas ? (
+                <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
+                  <div className="w-12 h-12 border-4 border-slate-200 border-t-accent rounded-full animate-spin"></div>
+                  <p className="text-slate-500 font-medium">Fetching research areas...</p>
                 </div>
-              ))}
+              ) : areasError ? (
+                <div className="col-span-full py-10 text-center">
+                  <p className="text-red-500 font-medium">{areasError}</p>
+                </div>
+              ) : areas.length === 0 ? (
+                <div className="col-span-full py-10 text-center">
+                  <p className="text-slate-400 italic">No research areas found.</p>
+                </div>
+              ) : (
+                areas.map((area) => (
+                  <div key={area._id} className="bg-white p-6 rounded-lg shadow-soft border border-slate-100 hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group">
+                    <h4 className="text-lg font-bold text-primary mb-3 font-heading">{area.title}</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">{area.description}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
