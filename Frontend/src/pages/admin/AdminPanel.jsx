@@ -9,6 +9,7 @@ const sidebarLinks = [
   { to: '/admin/guides', label: 'Project Guides' },
   { to: '/admin/publications', label: 'Publications' },
   { to: '/admin/research-areas', label: 'Research Areas' },
+  { to: '/admin/syllabus', label: 'Syllabus' },
   { separator: true, label: 'Study Materials' },
   { to: '/admin/materials/semesters', label: 'Semesters' },
   { to: '/admin/materials/subjects', label: 'Subjects' },

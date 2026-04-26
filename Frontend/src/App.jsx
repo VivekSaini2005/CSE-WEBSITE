@@ -41,6 +41,9 @@ const EditPublication = lazy(() => import("./pages/admin/publications/EditPublic
 const ResearchAreaList = lazy(() => import("./pages/admin/research-areas/ResearchAreaList.jsx"));
 const AddResearchArea = lazy(() => import("./pages/admin/research-areas/AddResearchArea.jsx"));
 const EditResearchArea = lazy(() => import("./pages/admin/research-areas/EditResearchArea.jsx"));
+const SyllabusList = lazy(() => import("./pages/admin/syllabus/SyllabusList.jsx"));
+const AddSyllabus = lazy(() => import("./pages/admin/syllabus/AddSyllabus.jsx"));
+const EditSyllabus = lazy(() => import("./pages/admin/syllabus/EditSyllabus.jsx"));
 
 import { Toaster } from "react-hot-toast";
 
@@ -88,6 +91,9 @@ function App() {
                   <Route path="research-areas" element={<ResearchAreaList />} />
                   <Route path="research-areas/add" element={<AddResearchArea />} />
                   <Route path="research-areas/edit/:id" element={<EditResearchArea />} />
+                  <Route path="syllabus" element={<SyllabusList />} />
+                  <Route path="syllabus/add" element={<AddSyllabus />} />
+                  <Route path="syllabus/edit/:id" element={<EditSyllabus />} />
                   <Route path="materials/semesters" element={<Semesters />} />
                   <Route path="materials/subjects" element={<Subjects />} />
                   <Route path="materials/resources" element={<Resources />} />
