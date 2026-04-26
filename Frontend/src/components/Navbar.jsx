@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext.jsx';
 import logo from "../assets/logo.png";
 
 const navLinks = [
@@ -36,6 +37,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { token, isAdmin, logout } = useAuth();
 
   // Handle dynamic scroll shadow and padding
   useEffect(() => {
@@ -82,74 +85,144 @@ const Navbar = () => {
 
         {/* Right: Desktop Navigation Links */}
         <div className="hidden lg:flex items-center gap-8 h-full">
-          {navLinks.map((link, idx) => {
-            
-            // Render Dropdown Hook
-            if (link.dropdown) {
-              const isParentActive = link.dropdown.some(drop => location.pathname === drop.path);
-              return (
-                <div key={`dropdown-${idx}`} className="relative group/dropdown h-full flex items-center">
-                  <button
-                    className={`group font-medium text-sm lg:text-[15px] py-1 transition-colors flex items-center gap-1 focus:outline-none h-full ${
-                      isParentActive ? "text-primary" : "text-slate-600 hover:text-primary"
+          {(() => {
+            const elements = [];
+            navLinks.forEach((link, idx) => {
+              if (idx === 1 && link.label === "Academics") {
+                // Render Academics as second item
+                const isParentActive = link.dropdown.some(drop => location.pathname === drop.path);
+                elements.push(
+                  <div key={`dropdown-academics`} className="relative group/dropdown h-full flex items-center">
+                    <button
+                      className={`group font-medium text-sm lg:text-[15px] py-1 transition-colors flex items-center gap-1 focus:outline-none h-full ${
+                        isParentActive ? "text-primary" : "text-slate-600 hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                      <svg className="w-4 h-4 transition-transform group-hover/dropdown:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      <span 
+                        className={`absolute left-0 -bottom-px w-full h-[2.5px] bg-primary transition-transform origin-left duration-300 ease-out ${
+                          isParentActive ? "scale-x-100" : "scale-x-0 group-hover/dropdown:scale-x-100"
+                        }`}
+                      ></span>
+                    </button>
+                    <div className="absolute right-0 top-full pt-1 opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top translate-y-1 group-hover/dropdown:translate-y-0 min-w-50 z-60">
+                      <div className="bg-white rounded-b-lg shadow-lg py-2 flex flex-col border border-slate-100 border-t-0">
+                        {link.dropdown.map(drop => {
+                          const isDropActive = location.pathname === drop.path;
+                          return (
+                            <Link
+                              key={drop.path}
+                              to={drop.path}
+                              className={`px-4 py-2.5 block text-sm font-medium transition-colors ${
+                                isDropActive 
+                                  ? "bg-slate-50 text-primary border-l-4 border-primary" 
+                                  : "text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent"
+                              }`}
+                            >
+                              {drop.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else if (idx === 2 && link.label === "People") {
+                // Render People as third item
+                elements.push(
+                  <div key="dropdown-people" className="relative group/dropdown h-full flex items-center">
+                    <button className="group font-medium text-sm lg:text-[15px] py-1 transition-colors flex items-center gap-1 focus:outline-none h-full text-slate-600 hover:text-primary">
+                      People
+                      <svg className="w-4 h-4 transition-transform group-hover/dropdown:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <div className="absolute right-0 top-full pt-1 opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top translate-y-1 group-hover/dropdown:translate-y-0 min-w-50 z-60">
+                      <div className="bg-white rounded-b-lg shadow-lg py-2 flex flex-col border border-slate-100 border-t-0">
+                        <Link to="/faculty" className="px-4 py-2.5 block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Faculty</Link>
+                        <Link to="/students" className="px-4 py-2.5 block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Students</Link>
+                        {!token && (
+                          <>
+                            <Link to="/login" className="px-4 py-2.5 block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Login</Link>
+                            <Link to="/register" className="px-4 py-2.5 block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Register</Link>
+                          </>
+                        )}
+                        {token && isAdmin && (
+                          <Link to="/admin" className="px-4 py-2.5 block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Admin Panel</Link>
+                        )}
+                        {token && (
+                          <button onClick={() => { logout(); navigate('/'); }} className="px-4 py-2.5 text-left block text-sm font-medium transition-colors text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent">Logout</button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else if ((idx !== 1 && idx !== 2) && link.dropdown) {
+                const isParentActive = link.dropdown.some(drop => location.pathname === drop.path);
+                elements.push(
+                  <div key={`dropdown-${idx}`} className="relative group/dropdown h-full flex items-center">
+                    <button
+                      className={`group font-medium text-sm lg:text-[15px] py-1 transition-colors flex items-center gap-1 focus:outline-none h-full ${
+                        isParentActive ? "text-primary" : "text-slate-600 hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                      <svg className="w-4 h-4 transition-transform group-hover/dropdown:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      <span 
+                        className={`absolute left-0 -bottom-px w-full h-[2.5px] bg-primary transition-transform origin-left duration-300 ease-out ${
+                          isParentActive ? "scale-x-100" : "scale-x-0 group-hover/dropdown:scale-x-100"
+                        }`}
+                      ></span>
+                    </button>
+                    <div className="absolute right-0 top-full pt-1 opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top translate-y-1 group-hover/dropdown:translate-y-0 min-w-50 z-60">
+                      <div className="bg-white rounded-b-lg shadow-lg py-2 flex flex-col border border-slate-100 border-t-0">
+                        {link.dropdown.map(drop => {
+                          const isDropActive = location.pathname === drop.path;
+                          return (
+                            <Link
+                              key={drop.path}
+                              to={drop.path}
+                              className={`px-4 py-2.5 block text-sm font-medium transition-colors ${
+                                isDropActive 
+                                  ? "bg-slate-50 text-primary border-l-4 border-primary" 
+                                  : "text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent"
+                              }`}
+                            >
+                              {drop.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else if (!link.dropdown && link.label !== "People") {
+                const isActive = location.pathname === link.path;
+                elements.push(
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`group relative font-medium text-sm lg:text-[15px] py-1 transition-colors h-full flex items-center ${
+                      isActive ? "text-primary" : "text-slate-600 hover:text-primary"
                     }`}
                   >
                     {link.label}
-                    <svg className="w-4 h-4 transition-transform group-hover/dropdown:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                    <span 
-                      className={`absolute left-0 bottom-[-1px] w-full h-[2.5px] bg-primary transition-transform origin-left duration-300 ease-out ${
-                        isParentActive ? "scale-x-100" : "scale-x-0 group-hover/dropdown:scale-x-100"
-                      }`}
+                    <span
+                        className={`absolute left-0 -bottom-px w-full h-[2.5px] bg-primary transition-transform origin-left duration-300 ease-out ${
+                          isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                        }`}
                     ></span>
-                  </button>
-                  
-                  {/* Dropdown Menu - Explicit mapping */}
-                  <div className="absolute right-0 top-full pt-1 opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top translate-y-1 group-hover/dropdown:translate-y-0 min-w-[200px] z-[60]">
-                    <div className="bg-white rounded-b-lg shadow-lg py-2 flex flex-col border border-slate-100 border-t-0">
-                      {link.dropdown.map(drop => {
-                        const isDropActive = location.pathname === drop.path;
-                        return (
-                          <Link
-                            key={drop.path}
-                            to={drop.path}
-                            className={`px-4 py-2.5 block text-sm font-medium transition-colors ${
-                              isDropActive 
-                                ? "bg-slate-50 text-primary border-l-4 border-primary" 
-                                : "text-slate-600 hover:bg-slate-50 hover:text-primary border-l-4 border-transparent"
-                            }`}
-                          >
-                            {drop.label}
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            // Standard Link Hook
-            const isActive = location.pathname === link.path;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`group relative font-medium text-sm lg:text-[15px] py-1 transition-colors h-full flex items-center ${
-                  isActive ? "text-primary" : "text-slate-600 hover:text-primary"
-                }`}
-              >
-                {link.label}
-                {/* Premium sliding underline animation */}
-                <span
-                  className={`absolute left-0 bottom-[-1px] w-full h-[2.5px] bg-primary transition-transform origin-left duration-300 ease-out ${
-                    isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                ></span>
-              </Link>
-            );
-          })}
+                  </Link>
+                );
+              }
+            });
+            return elements;
+          })()}
         </div>
 
         {/* Mobile menu trigger: Shifted to lg:hidden so we don't break layouts on iPads in portrait */}
@@ -180,34 +253,31 @@ const Navbar = () => {
       >
         <div className="flex flex-col py-4 px-6 gap-1">
           {navLinks.map((link) => {
-            
             // Mobile Expandable Section
-            if (link.dropdown) {
+            if (link.label === "People") {
               return (
-                <div key={`mob-drop-${link.label}`} className="flex flex-col focus:outline-none">
+                <div key={`mob-drop-people`} className="flex flex-col focus:outline-none">
                   <span className="font-bold text-xs uppercase tracking-wider text-slate-400 pl-4 py-2 mt-2">
-                    {link.label}
+                    People
                   </span>
-                  {link.dropdown.map(drop => {
-                    const isDropActive = location.pathname === drop.path;
-                    return (
-                      <Link
-                        key={drop.path}
-                        to={drop.path}
-                        className={`font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md ${
-                          isDropActive
-                            ? "text-primary border-primary bg-primary/5"
-                            : "text-slate-600 border-transparent hover:text-primary hover:bg-slate-50"
-                        }`}
-                      >
-                        {drop.label}
-                      </Link>
-                    );
-                  })}
+                  {!token && (
+                    <>
+                      <Link to="/login" className="font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md text-slate-600 border-transparent hover:text-primary hover:bg-slate-50">Login</Link>
+                      <Link to="/register" className="font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md text-slate-600 border-transparent hover:text-primary hover:bg-slate-50">Register</Link>
+                    </>
+                  )}
+                  {token && isAdmin && (
+                    <>
+                      <Link to="/admin" className="font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md text-slate-600 border-transparent hover:text-primary hover:bg-slate-50">Admin Panel</Link>
+                      <button onClick={() => { logout(); navigate('/'); }} className="text-left font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md text-slate-600 border-transparent hover:text-primary hover:bg-slate-50">Logout</button>
+                    </>
+                  )}
+                  {token && !isAdmin && (
+                    <button onClick={() => { logout(); navigate('/'); }} className="text-left font-medium text-[15px] transition-all border-l-2 pl-6 py-2.5 rounded-r-md text-slate-600 border-transparent hover:text-primary hover:bg-slate-50">Logout</button>
+                  )}
                 </div>
               );
             }
-
             // Standard Mobile Link
             const isActive = location.pathname === link.path;
             return (

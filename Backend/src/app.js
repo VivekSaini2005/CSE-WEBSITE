@@ -22,7 +22,11 @@ const authRoutes = require('./routes/auth.routes');
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+app.use(cors({
+	origin: allowedOrigin,
+	credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
