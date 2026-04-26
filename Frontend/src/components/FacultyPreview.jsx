@@ -1,8 +1,24 @@
 import { Link } from "react-router-dom";
-import faculty from "../data/facultyData";
+import useFetch from "../hooks/useFetch";
+import { getFaculty } from "../api/public/faculty";
+import { getFileUrl } from "../utils/fileUtils";
 import Card from "./Card";
+import Loader from "./common/Loader";
 
 const FacultyPreview = () => {
+  const { data: rawFaculty, loading, error } = useFetch(getFaculty);
+
+  // Spotlight first 3 faculty
+  const spotlightFaculty = (rawFaculty || []).slice(0, 3);
+
+  if (loading) return <Loader />;
+
+  const faculty = (rawFaculty || []).slice(0, 3);
+
+  if (error || faculty.length === 0) {
+    return null; // Don't show spotlight if empty or error
+  }
+
   return (
     <div className="w-full">
       <div className="text-center mb-10">
@@ -15,8 +31,12 @@ const FacultyPreview = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {faculty.slice(0, 3).map((teacher) => (
-          <Card key={teacher.id} {...teacher} />
+        {faculty.map((teacher) => (
+          <Card 
+            key={teacher._id} 
+            {...teacher} 
+            image={getFileUrl(teacher.image)} 
+          />
         ))}
       </div>
 

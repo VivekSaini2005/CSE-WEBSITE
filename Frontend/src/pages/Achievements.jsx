@@ -1,15 +1,32 @@
 import React, { useState } from "react";
+import useFetch from "../hooks/useFetch";
+import { getAchievements } from "../api/public/achievements";
+import { formatDate } from "../utils/formatDate";
+import Loader from "../components/common/Loader";
 
-import achievementData from "../data/achievementData";
 
 const Achievements = () => {
   const [filter, setFilter] = useState("All");
+  const { data: rawAchievements, loading, error } = useFetch(getAchievements);
 
   const categories = ["All", "Students", "Faculty"];
 
+  const achievementList = rawAchievements || [];
+
   const filteredData = filter === "All" 
-    ? achievementData 
-    : achievementData.filter(item => item.category === filter);
+    ? achievementList 
+    : achievementList.filter(item => item.category === filter);
+
+  if (loading) return <Loader fullPage />;
+
+  if (error) {
+    return (
+      <div className="text-center py-20 bg-white rounded-lg border border-red-100 shadow-soft">
+        <h3 className="text-xl font-bold text-red-600 mb-2">Error loading achievements</h3>
+        <p className="text-muted">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-10 w-full animate-fade-in-up">
@@ -42,48 +59,48 @@ const Achievements = () => {
 
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        {filteredData.map((item) => (
-          <div 
-            key={item.id}
-            className="group bg-white p-6 md:p-8 rounded-lg shadow-soft border border-slate-100 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-default"
-          >
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-medium text-muted bg-slate-50 px-3 py-1 rounded border border-slate-100">
-                  {item.date}
-                </span>
+        {filteredData.length === 0 ? (
+          <div className="col-span-full text-center py-20 bg-white rounded-lg shadow-soft border border-slate-100 italic text-slate-400">
+            No achievements found for this category.
+          </div>
+        ) : (
+          filteredData.map((item) => (
+            <div 
+              key={item._id}
+              className="group bg-white p-6 md:p-8 rounded-lg shadow-soft border border-slate-100 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-default"
+            >
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <span className="text-sm font-medium text-muted bg-slate-50 px-3 py-1 rounded border border-slate-100">
+                    {formatDate(item.date)}
+                  </span>
+                  
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-1 rounded">
+                    {item.badge || 'Achievement'}
+                  </span>
+                </div>
                 
-                <span className="text-xs font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-1 rounded">
-                  {item.badge}
-                </span>
+                <h3 className="text-lg md:text-xl font-semibold font-heading text-primary mb-3 leading-tight group-hover:text-slate-800 transition-colors">
+                  {item.title}
+                </h3>
+                
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                  {item.description}
+                </p>
               </div>
               
-              <h3 className="text-lg md:text-xl font-semibold font-heading text-primary mb-3 leading-tight group-hover:text-slate-800 transition-colors">
-                {item.title}
-              </h3>
-              
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
-                {item.description}
-              </p>
+              <div className="mt-auto border-t border-slate-100 pt-4 flex items-center gap-2">
+                <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="text-sm font-medium text-slate-500">
+                  Category: <span className="text-slate-700">{item.category}</span>
+                </span>
+              </div>
             </div>
-            
-            <div className="mt-auto border-t border-slate-100 pt-4 flex items-center gap-2">
-              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span className="text-sm font-medium text-slate-500">
-                Category: <span className="text-slate-700">{item.category}</span>
-              </span>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
-      
-      {filteredData.length === 0 && (
-        <div className="text-center py-20 bg-white rounded-lg shadow-soft border border-slate-100">
-          <p className="text-muted">No achievements found for this category.</p>
-        </div>
-      )}
     </div>
   );
 };

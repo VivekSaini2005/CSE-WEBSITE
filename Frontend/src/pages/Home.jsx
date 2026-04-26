@@ -2,6 +2,9 @@ import Hero from "../components/Hero";
 import Stats from "../components/Stats";
 import NewsSection from "../components/NewsSection";
 import FacultyPreview from "../components/FacultyPreview";
+import EventPreview from "../components/EventPreview";
+import AchievementPreview from "../components/AchievementPreview";
+import TestimonialsSection from "../components/TestimonialsSection";
 
 const Home = () => {
   return (
@@ -9,6 +12,9 @@ const Home = () => {
       <Hero />
       <Stats />
       <NewsSection />
+      <EventPreview />
+      <AchievementPreview />
+      <TestimonialsSection />
       <FacultyPreview />
     </div>
   );

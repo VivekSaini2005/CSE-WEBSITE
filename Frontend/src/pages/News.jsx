@@ -1,46 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { fetchNews } from "../api/news";
+import React, { useState } from "react";
+import useFetch from "../hooks/useFetch";
+import { getNews } from "../api/public/news";
 import { formatDate } from "../utils/formatDate";
+import Loader from "../components/common/Loader";
 
 const News = () => {
-  const [newsList, setNewsList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: rawNews, loading, error } = useFetch(getNews);
   const [expandedId, setExpandedId] = useState(null);
-
-  useEffect(() => {
-    const getNews = async () => {
-      try {
-        const response = await fetchNews();
-        const data = response.data || [];
-        
-        // Map _id to id and ensure the list is sorted by date (latest first)
-        const mappedData = data.map(item => ({
-          ...item,
-          id: item._id
-        })).sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        setNewsList(mappedData);
-      } catch (err) {
-        setError(err.message || "Failed to load news");
-      } finally {
-        setLoading(false);
-      }
-    };
-    getNews();
-  }, []);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (loading) return <Loader fullPage />;
 
   if (error) {
     return (
@@ -52,6 +24,9 @@ const News = () => {
       </div>
     );
   }
+
+  // Ensure news is sorted by date (latest first)
+  const newsList = (rawNews || []).sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div className="flex flex-col gap-10 w-full animate-fade-in-up">
@@ -74,7 +49,7 @@ const News = () => {
         ) : (
           newsList.map((item) => (
             <div 
-              key={item.id}
+              key={item._id}
               className="group bg-white p-5 rounded-lg border border-gray-100 hover:border-primary transition-all duration-300 hover:shadow-soft flex flex-col"
             >
               <div className="flex justify-between items-start gap-4 mb-2">
@@ -91,18 +66,18 @@ const News = () => {
               </p>
 
               {/* Read More Section (Expand/Collapse) */}
-              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedId === item.id ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
+              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedId === item._id ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
                 <div className="pt-3 border-t border-slate-50 text-sm text-slate-600 italic border-l-2 border-accent pl-3 rounded-r-md bg-slate-50/50 py-2">
                   Detailed itinerary and registration links for this event are available at the main administrative office.
                 </div>
               </div>
 
               <button 
-                onClick={() => toggleExpand(item.id)}
+                onClick={() => toggleExpand(item._id)}
                 className="mt-4 text-sm font-medium text-accent hover:text-primary transition-colors focus:outline-none self-start flex items-center gap-1 group/btn"
               >
-                {expandedId === item.id ? "Show Less" : "Read More"}
-                <svg className={`w-4 h-4 transition-transform group-hover/btn:translate-y-px ${expandedId === item.id ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {expandedId === item._id ? "Show Less" : "Read More"}
+                <svg className={`w-4 h-4 transition-transform group-hover/btn:translate-y-px ${expandedId === item._id ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>

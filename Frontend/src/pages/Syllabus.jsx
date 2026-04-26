@@ -1,25 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { fetchSyllabus } from "../api/admin/syllabusService";
+import React from "react";
+import useFetch from "../hooks/useFetch";
+import { getSyllabus } from "../api/public/syllabus";
 import { getFileUrl } from "../utils/fileUtils";
 
 const Syllabus = () => {
-  const [syllabusList, setSyllabusList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetchSyllabus();
-        setSyllabusList(response.data || []);
-      } catch (err) {
-        setError(err.message || "Failed to load syllabus data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, []);
+  const { data: rawSyllabus, loading, error } = useFetch(getSyllabus);
+  const syllabusList = rawSyllabus || [];
 
   if (loading) {
     return (

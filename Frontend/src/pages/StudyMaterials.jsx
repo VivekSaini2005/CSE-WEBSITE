@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { fetchSemesters, createSemester, deleteSemester } from '../api/admin/semesterService';
-import { fetchSubjects, createSubject, deleteSubject } from '../api/admin/subjectService';
-import { fetchResources, createResource, deleteResource } from '../api/admin/resourceService';
+import { getSemesters, getSubjects, getResources } from '../api/public/studyMaterials';
+import { createSemester, deleteSemester } from '../api/admin/semesterService';
+import { createSubject, deleteSubject } from '../api/admin/subjectService';
+import { createResource, deleteResource } from '../api/admin/resourceService';
 import { formatMaterials } from '../utils/formatMaterials';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -31,15 +32,15 @@ const StudyMaterials = () => {
     setError(null);
     try {
       const [semRes, subRes, resRes] = await Promise.all([
-        fetchSemesters(),
-        fetchSubjects(),
-        fetchResources()
+        getSemesters(),
+        getSubjects(),
+        getResources()
       ]);
 
       const formatted = formatMaterials(
-        semRes.data || [],
-        subRes.data || [],
-        resRes.data || []
+        semRes || [],
+        subRes || [],
+        resRes || []
       );
       
       setMaterialsData(formatted);

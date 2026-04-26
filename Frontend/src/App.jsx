@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Loader from "./components/common/Loader";
 // Eager load main pages
 import Home from "./pages/Home";
 import Faculty from "./pages/Faculty";
@@ -44,6 +45,9 @@ const EditResearchArea = lazy(() => import("./pages/admin/research-areas/EditRes
 const SyllabusList = lazy(() => import("./pages/admin/syllabus/SyllabusList.jsx"));
 const AddSyllabus = lazy(() => import("./pages/admin/syllabus/AddSyllabus.jsx"));
 const EditSyllabus = lazy(() => import("./pages/admin/syllabus/EditSyllabus.jsx"));
+const TestimonialList = lazy(() => import("./pages/admin/testimonials/TestimonialList.jsx"));
+const AddTestimonial = lazy(() => import("./pages/admin/testimonials/AddTestimonial.jsx"));
+const EditTestimonial = lazy(() => import("./pages/admin/testimonials/EditTestimonial.jsx"));
 
 import { Toaster } from "react-hot-toast";
 
@@ -54,7 +58,7 @@ function App() {
       <div className="flex flex-col min-h-screen bg-secondary font-body">
         <Navbar />
         <main className="grow container py-4 lg:py-6">
-          <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+          <Suspense fallback={<Loader fullPage />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/faculty" element={<Faculty />} />
@@ -94,6 +98,9 @@ function App() {
                   <Route path="syllabus" element={<SyllabusList />} />
                   <Route path="syllabus/add" element={<AddSyllabus />} />
                   <Route path="syllabus/edit/:id" element={<EditSyllabus />} />
+                  <Route path="testimonials" element={<TestimonialList />} />
+                  <Route path="testimonials/add" element={<AddTestimonial />} />
+                  <Route path="testimonials/edit/:id" element={<EditTestimonial />} />
                   <Route path="materials/semesters" element={<Semesters />} />
                   <Route path="materials/subjects" element={<Subjects />} />
                   <Route path="materials/resources" element={<Resources />} />

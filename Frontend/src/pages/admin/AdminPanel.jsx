@@ -10,6 +10,7 @@ const sidebarLinks = [
   { to: '/admin/publications', label: 'Publications' },
   { to: '/admin/research-areas', label: 'Research Areas' },
   { to: '/admin/syllabus', label: 'Syllabus' },
+  { to: '/admin/testimonials', label: 'Testimonials' },
   { separator: true, label: 'Study Materials' },
   { to: '/admin/materials/semesters', label: 'Semesters' },
   { to: '/admin/materials/subjects', label: 'Subjects' },

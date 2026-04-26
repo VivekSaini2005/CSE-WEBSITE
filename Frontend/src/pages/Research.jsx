@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { fetchGuides } from "../api/admin/guideService";
-import { fetchPublications } from "../api/admin/publicationService";
-import { fetchResearchAreas } from "../api/admin/researchAreaService";
-
-// import researchAreas from "../data/researchAreasData";
-// import publications from "../data/publicationsData";
-
-
-
-// import projectGuideData from "../data/projectGuideData";
+import React, { useState, useMemo } from "react";
+import useFetch from "../hooks/useFetch";
+import { getGuides } from "../api/public/guides";
+import { getPublications } from "../api/public/publications";
+import { getResearchAreas } from "../api/public/researchAreas";
+import Loader from "../components/common/Loader";
 
 const ProjectGuideCard = ({ guide }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const displayProjects = isExpanded ? guide.projects : guide.projects.slice(0, 2);
+  // Support both array of strings (backend check)
+  const projects = Array.isArray(guide.projects) ? guide.projects : [];
+  const displayProjects = isExpanded ? projects : projects.slice(0, 2);
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
@@ -57,12 +54,12 @@ const ProjectGuideCard = ({ guide }) => {
           ))}
         </ul>
 
-        {guide.projects.length > 2 && (
+        {projects.length > 2 && (
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-[11px] font-bold text-primary/60 hover:text-primary mt-2 transition-colors flex items-center gap-1 focus:outline-none"
           >
-            {isExpanded ? "Collapse Projects" : `+ ${guide.projects.length - 2} More Projects`}
+            {isExpanded ? "Collapse Projects" : `+ ${projects.length - 2} More Projects`}
             <svg className={`w-3 h-3 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -88,74 +85,16 @@ const ProjectGuideCard = ({ guide }) => {
 
 const Research = () => {
   const [activeTab, setActiveTab] = useState("All");
-  const [guides, setGuides] = useState([]);
-  const [loadingGuides, setLoadingGuides] = useState(false);
-  const [guidesError, setGuidesError] = useState(null);
-  const [pubs, setPubs] = useState([]);
-  const [loadingPubs, setLoadingPubs] = useState(false);
-  const [pubsError, setPubsError] = useState(null);
-  const [areas, setAreas] = useState([]);
-  const [loadingAreas, setLoadingAreas] = useState(false);
-  const [areasError, setAreasError] = useState(null);
 
-  useEffect(() => {
-    const loadGuides = async () => {
-      setLoadingGuides(true);
-      setGuidesError(null);
-      try {
-        const response = await fetchGuides();
-        setGuides(response.data || []);
-      } catch (err) {
-        console.error("Error fetching guides:", err);
-        setGuidesError("Failed to load project guides.");
-      } finally {
-        setLoadingGuides(false);
-      }
-    };
+  const { data: rawGuides, loading: loadingGuides, error: guidesError } = useFetch(getGuides);
+  const { data: rawPubs, loading: loadingPubs, error: pubsError } = useFetch(getPublications);
+  const { data: rawAreas, loading: loadingAreas, error: areasError } = useFetch(getResearchAreas);
 
-    if (activeTab === "All" || activeTab === "Project Guide") {
-      loadGuides();
-    }
-
-    const loadPubs = async () => {
-      setLoadingPubs(true);
-      setPubsError(null);
-      try {
-        const response = await fetchPublications();
-        const data = response.data || [];
-        // Latest first
-        const sorted = [...data].sort((a, b) => (b.year || 0) - (a.year || 0));
-        setPubs(sorted);
-      } catch (err) {
-        console.error("Error fetching publications:", err);
-        setPubsError("Failed to load publications.");
-      } finally {
-        setLoadingPubs(false);
-      }
-    };
-
-    if (activeTab === "All" || activeTab === "Publications") {
-      loadPubs();
-    }
-
-    const loadAreas = async () => {
-      setLoadingAreas(true);
-      setAreasError(null);
-      try {
-        const response = await fetchResearchAreas();
-        setAreas(response.data || []);
-      } catch (err) {
-        console.error("Error fetching research areas:", err);
-        setAreasError("Failed to load research areas.");
-      } finally {
-        setLoadingAreas(false);
-      }
-    };
-
-    if (activeTab === "All" || activeTab === "Research Areas") {
-      loadAreas();
-    }
-  }, [activeTab]);
+  const guides = rawGuides || [];
+  const pubs = useMemo(() => {
+    return (rawPubs || []).sort((a, b) => (b.year || 0) - (a.year || 0));
+  }, [rawPubs]);
+  const areas = rawAreas || [];
 
   const tabs = ["All", "Research Areas", "Publications", "Project Guide"];
 
@@ -201,10 +140,7 @@ const Research = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {loadingAreas ? (
-                <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
-                  <div className="w-12 h-12 border-4 border-slate-200 border-t-accent rounded-full animate-spin"></div>
-                  <p className="text-slate-500 font-medium">Fetching research areas...</p>
-                </div>
+                <Loader className="col-span-full" />
               ) : areasError ? (
                 <div className="col-span-full py-10 text-center">
                   <p className="text-red-500 font-medium">{areasError}</p>
@@ -235,10 +171,7 @@ const Research = () => {
             
             <div className="bg-white rounded-lg shadow-soft border border-slate-100 overflow-hidden px-6 md:px-8 py-2">
               {loadingPubs ? (
-                <div className="py-20 flex flex-col items-center justify-center gap-4">
-                  <div className="w-12 h-12 border-4 border-slate-200 border-t-accent rounded-full animate-spin"></div>
-                  <p className="text-slate-500 font-medium">Fetching publications...</p>
-                </div>
+                <Loader />
               ) : pubsError ? (
                 <div className="py-10 text-center">
                   <p className="text-red-500 font-medium">{pubsError}</p>
@@ -286,10 +219,7 @@ const Research = () => {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {loadingGuides ? (
-                <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
-                  <div className="w-12 h-12 border-4 border-slate-200 border-t-primary rounded-full animate-spin"></div>
-                  <p className="text-slate-500 font-medium">Fetching guides...</p>
-                </div>
+                <Loader className="col-span-full" />
               ) : guidesError ? (
                 <div className="col-span-full py-10 text-center">
                   <p className="text-red-500 font-medium">{guidesError}</p>

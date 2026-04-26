@@ -1,9 +1,28 @@
 import { useState } from "react";
-import faculty from "../data/facultyData";
+import useFetch from "../hooks/useFetch";
+import { getFaculty } from "../api/public/faculty";
 import Card from "../components/Card";
+import { getFileUrl } from "../utils/fileUtils";
+import Loader from "../components/common/Loader";
 
 const Faculty = () => {
   const [filterDesignation, setFilterDesignation] = useState("");
+  const { data: facultyMembers, loading, error } = useFetch(getFaculty);
+
+  if (loading) {
+    return <Loader fullPage />;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20 bg-white rounded-lg border border-red-100 shadow-soft">
+        <h3 className="text-xl font-bold text-red-600 mb-2">Error loading faculty</h3>
+        <p className="text-muted">{error}</p>
+      </div>
+    );
+  }
+
+  const faculty = facultyMembers || [];
 
   const filteredFaculty = faculty.filter((teacher) => {
     return filterDesignation ? teacher.designation === filterDesignation : true;
@@ -25,7 +44,11 @@ const Faculty = () => {
       {filteredFaculty.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl mx-auto pb-12">
           {filteredFaculty.map((teacher) => (
-            <Card key={teacher.id} {...teacher} />
+            <Card 
+              key={teacher._id} 
+              {...teacher} 
+              image={getFileUrl(teacher.image)} 
+            />
           ))}
         </div>
       ) : (
@@ -34,9 +57,9 @@ const Faculty = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <h3 className="text-xl font-bold text-slate-800 mb-2">No faculty found</h3>
-          <p className="text-muted">Try adjusting your search query or filters.</p>
+          <p className="text-muted">Currently there are no faculty members matching your criteria.</p>
           <button 
-            onClick={() => { setSearchTerm(""); setFilterDesignation(""); }}
+            onClick={() => setFilterDesignation("")}
             className="mt-4 px-6 py-2 bg-primary/10 text-primary font-medium rounded-md hover:bg-primary/20 transition-colors focus:outline-none"
           >
             Clear Filters
@@ -47,4 +70,4 @@ const Faculty = () => {
   );
 };
 
-export default Faculty;
+export default Faculty;

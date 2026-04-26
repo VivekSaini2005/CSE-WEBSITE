@@ -1,9 +1,26 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import news from "../data/newsData";
+import useFetch from "../hooks/useFetch";
+import { getNews } from "../api/public/news";
+import Loader from "./common/Loader";
 
 const NewsSection = () => {
-  // Ensure we only slice the 3 latest nodes for the homepage preview
-  const latestNews = news.slice(0, 3);
+  const { data: rawNews, loading, error } = useFetch(getNews);
+
+  // Take the latest 3 items only
+  const latestNews = (rawNews || [])
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
+  if (loading) return <Loader />;
+
+  if (error || latestNews.length === 0) {
+    return (
+      <div className="w-full py-10 text-center text-slate-400 italic bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
+        {error ? "Couldn't load latest news." : "No news announcements available."}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -16,7 +33,7 @@ const NewsSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {latestNews.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             className="group bg-white p-5 rounded-lg border border-gray-100 hover:border-primary transition-all duration-300 hover:shadow-soft flex flex-col h-full"
           >
             {/* Matching standard news-page aesthetic */}
@@ -24,8 +41,8 @@ const NewsSection = () => {
               <h3 className="text-lg font-semibold font-heading text-primary leading-tight group-hover:text-slate-800 transition-colors">
                 {item.title}
               </h3>
-              <span className="text-xs font-medium text-muted bg-slate-50 px-3 py-1 rounded border border-slate-100 whitespace-nowrap self-start sm:self-auto">
-                {item.date}
+              <span className="text-[10px] font-medium text-muted bg-slate-50 px-3 py-1 rounded border border-slate-100 whitespace-nowrap self-start sm:self-auto uppercase tracking-wider">
+                {item.date ? new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Recent'}
               </span>
             </div>
             
@@ -60,4 +77,4 @@ const NewsSection = () => {
   );
 };
 
-export default NewsSection;
+export default NewsSection;
