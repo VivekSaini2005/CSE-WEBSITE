@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, guideController.createGuide);
 
 router.route('/:id')
+    .get(guideController.getGuideById)
     .put(protect, isAdmin, guideController.updateGuide)
     .delete(protect, isAdmin, guideController.deleteGuide);
 

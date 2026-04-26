@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchGuides } from "../api/admin/guideService";
+import { fetchPublications } from "../api/admin/publicationService";
 
 import researchAreas from "../data/researchAreasData";
-import publications from "../data/publicationsData";
+// import publications from "../data/publicationsData";
 
 
 
@@ -89,6 +90,9 @@ const Research = () => {
   const [guides, setGuides] = useState([]);
   const [loadingGuides, setLoadingGuides] = useState(false);
   const [guidesError, setGuidesError] = useState(null);
+  const [pubs, setPubs] = useState([]);
+  const [loadingPubs, setLoadingPubs] = useState(false);
+  const [pubsError, setPubsError] = useState(null);
 
   useEffect(() => {
     const loadGuides = async () => {
@@ -107,6 +111,27 @@ const Research = () => {
 
     if (activeTab === "All" || activeTab === "Project Guide") {
       loadGuides();
+    }
+
+    const loadPubs = async () => {
+      setLoadingPubs(true);
+      setPubsError(null);
+      try {
+        const response = await fetchPublications();
+        const data = response.data || [];
+        // Latest first
+        const sorted = [...data].sort((a, b) => (b.year || 0) - (a.year || 0));
+        setPubs(sorted);
+      } catch (err) {
+        console.error("Error fetching publications:", err);
+        setPubsError("Failed to load publications.");
+      } finally {
+        setLoadingPubs(false);
+      }
+    };
+
+    if (activeTab === "All" || activeTab === "Publications") {
+      loadPubs();
     }
   }, [activeTab]);
 
@@ -172,22 +197,39 @@ const Research = () => {
             </div>
             
             <div className="bg-white rounded-lg shadow-soft border border-slate-100 overflow-hidden px-6 md:px-8 py-2">
-              <ul className="flex flex-col">
-                {publications.map((pub, idx) => (
-                  <li key={idx} className="border-b border-slate-100 last:border-0 py-6">
-                    <h4 className="font-semibold text-lg md:text-xl text-primary leading-snug mb-2 font-heading">{pub.title}</h4>
-                    <p className="text-slate-700 text-sm mb-2"><span className="font-semibold">Authors:</span> {pub.authors}</p>
-                    <div className="flex flex-wrap items-center gap-3 mt-3">
-                      <span className="text-xs md:text-sm text-slate-600 italic border border-slate-200 bg-slate-50 px-3 py-1 rounded-full">
-                        {pub.venue}
-                      </span>
-                      <span className="text-xs md:text-sm font-bold text-accent bg-accent/10 px-3 py-1 rounded-full">
-                        {pub.year}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              {loadingPubs ? (
+                <div className="py-20 flex flex-col items-center justify-center gap-4">
+                  <div className="w-12 h-12 border-4 border-slate-200 border-t-accent rounded-full animate-spin"></div>
+                  <p className="text-slate-500 font-medium">Fetching publications...</p>
+                </div>
+              ) : pubsError ? (
+                <div className="py-10 text-center">
+                  <p className="text-red-500 font-medium">{pubsError}</p>
+                </div>
+              ) : pubs.length === 0 ? (
+                <div className="py-10 text-center">
+                  <p className="text-slate-400 italic">No publications found.</p>
+                </div>
+              ) : (
+                <ul className="flex flex-col">
+                  {pubs.map((pub) => (
+                    <li key={pub._id} className="border-b border-slate-100 last:border-0 py-6">
+                      <h4 className="font-semibold text-lg md:text-xl text-primary leading-snug mb-2 font-heading">{pub.title}</h4>
+                      <p className="text-slate-700 text-sm mb-2">
+                        <span className="font-semibold">Authors:</span> {Array.isArray(pub.authors) ? pub.authors.join(', ') : pub.authors}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 mt-3">
+                        <span className="text-xs md:text-sm text-slate-600 italic border border-slate-200 bg-slate-50 px-3 py-1 rounded-full">
+                          {pub.venue}
+                        </span>
+                        <span className="text-xs md:text-sm font-bold text-accent bg-accent/10 px-3 py-1 rounded-full">
+                          {pub.year}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         )}

@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, publicationController.createPublication);
 
 router.route('/:id')
+    .get(publicationController.getPublicationById)
     .put(protect, isAdmin, publicationController.updatePublication)
     .delete(protect, isAdmin, publicationController.deletePublication);
 

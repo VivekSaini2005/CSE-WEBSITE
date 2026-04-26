@@ -7,6 +7,7 @@ const sidebarLinks = [
   { to: '/admin/news', label: 'News' },
   { to: '/admin/faculty', label: 'Faculty' },
   { to: '/admin/guides', label: 'Project Guides' },
+  { to: '/admin/publications', label: 'Publications' },
   { separator: true, label: 'Study Materials' },
   { to: '/admin/materials/semesters', label: 'Semesters' },
   { to: '/admin/materials/subjects', label: 'Subjects' },
