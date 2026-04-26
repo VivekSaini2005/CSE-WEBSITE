@@ -3,7 +3,7 @@ import api from '../api';
 /**
  * Centralized error handler for admin API calls
  */
-const handleApiError = (error) => {
+export const handleApiError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {
     throw new Error(error.response.data.message);
   }
@@ -13,10 +13,11 @@ const handleApiError = (error) => {
 /**
  * Get all items for a specific resource
  * @param {string} resource - e.g., 'news', 'events', 'faculty'
+ * @param {object} params - Optional query parameters
  */
-export const getAll = async (resource) => {
+export const getAll = async (resource, params = {}) => {
   try {
-    const response = await api.get(`/${resource}`);
+    const response = await api.get(`/${resource}`, { params });
     return response.data;
   } catch (error) {
     handleApiError(error);

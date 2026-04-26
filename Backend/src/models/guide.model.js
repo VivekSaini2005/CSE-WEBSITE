@@ -9,6 +9,11 @@ const guideSchema = new mongoose.Schema(
         domain: {
             type: String,
         },
+        projects: [
+            {
+                type: String,
+            },
+        ],
     },
     {
         timestamps: true,

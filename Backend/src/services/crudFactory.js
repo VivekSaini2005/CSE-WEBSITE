@@ -11,9 +11,15 @@ exports.createOne = (Model) =>
         );
     });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, populatePath = null) =>
     asyncHandler(async (req, res) => {
-        const docs = await Model.find({}).sort({ createdAt: -1 });
+        let query = Model.find({});
+        
+        if (populatePath) {
+            query = query.populate(populatePath);
+        }
+
+        const docs = await query.sort({ createdAt: -1 });
 
         return res.status(200).json(
             new ApiResponse(200, docs, "Documents fetched successfully")

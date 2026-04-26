@@ -14,7 +14,7 @@ import About from "./pages/About";
 import Admissions from "./pages/Admissions";
 import Syllabus from "./pages/Syllabus";
 import Students from "./pages/Students";
-import CuratedStudyMaterials from "./pages/CuratedStudyMaterials";
+import StudyMaterials from "./pages/StudyMaterials";
 // Lazy load auth/admin routes
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
@@ -26,6 +26,12 @@ const EditFaculty = lazy(() => import("./pages/admin/faculty/EditFaculty.jsx"));
 import EventsList from "./pages/admin/events/EventsList.jsx";
 import AddEvent from "./pages/admin/events/AddEvent.jsx";
 import EditEvent from "./pages/admin/events/EditEvent.jsx";
+const Semesters = lazy(() => import("./pages/admin/materials/Semesters.jsx"));
+const Subjects = lazy(() => import("./pages/admin/materials/Subjects.jsx"));
+const Resources = lazy(() => import("./pages/admin/materials/Resources.jsx"));
+const NewsList = lazy(() => import("./pages/admin/news/NewsList.jsx"));
+const AddNews = lazy(() => import("./pages/admin/news/AddNews.jsx"));
+const EditNews = lazy(() => import("./pages/admin/news/EditNews.jsx"));
 
 import { Toaster } from "react-hot-toast";
 
@@ -48,7 +54,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/academics/admissions" element={<Admissions />} />
               <Route path="/academics/syllabus" element={<Syllabus />} />
-              <Route path="/academics/materials" element={<CuratedStudyMaterials />} />
+              <Route path="/academics/materials" element={<StudyMaterials />} />
               <Route path="/students" element={<Students />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -58,11 +64,16 @@ function App() {
                   <Route path="events" element={<EventsList />} />
                   <Route path="events/add" element={<AddEvent />} />
                   <Route path="events/edit/:id" element={<EditEvent />} />
-                  <Route path="news" element={<div>News Management</div>} />
+                  <Route path="news" element={<NewsList />} />
+                  <Route path="news/add" element={<AddNews />} />
+                  <Route path="news/edit/:id" element={<EditNews />} />
                   <Route path="faculty" element={<FacultyList />} />
                   <Route path="faculty/add" element={<AddFaculty />} />
                   <Route path="faculty/edit/:id" element={<EditFaculty />} />
                   <Route path="projects" element={<div>Projects Management</div>} />
+                  <Route path="materials/semesters" element={<Semesters />} />
+                  <Route path="materials/subjects" element={<Subjects />} />
+                  <Route path="materials/resources" element={<Resources />} />
                 </Route>
               </Route>
             </Routes>

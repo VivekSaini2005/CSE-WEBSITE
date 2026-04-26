@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, newsController.createNews);
 
 router.route('/:id')
+    .get(newsController.getNewsById)
     .put(protect, isAdmin, newsController.updateNews)
     .delete(protect, isAdmin, newsController.deleteNews);
 

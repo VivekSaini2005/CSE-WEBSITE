@@ -1,7 +1,7 @@
 const Resource = require('../models/resource.model');
 const { createOne, getAll, updateOne, deleteOne } = require('../services/crudFactory');
 
-const getAllResources = getAll(Resource);
+const getAllResources = getAll(Resource, 'subject');
 const createResource = createOne(Resource);
 const updateResource = updateOne(Resource);
 const deleteResource = deleteOne(Resource);
