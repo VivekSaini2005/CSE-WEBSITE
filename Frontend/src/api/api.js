@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 // Get baseURL from env with fallback
 const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
@@ -28,14 +29,26 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      console.error('API Error:', error.response.status, error.response.data);
-      if (error.response.status === 401) {
-        // Optionally clear token on unauthorized
+      const { status } = error.response;
+      
+      if (status === 401) {
+        // Unauthorized: token is invalid or expired
+        console.error('Session expired or unauthorized');
         localStorage.removeItem('token');
-        // Optionally, redirect to login or notify user
+        localStorage.removeItem('user');
+        localStorage.removeItem('isAdmin');
+        
+        // Redirect to login if not already there
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      } else if (status === 403) {
+        // Forbidden: user doesn't have required permission (admin)
+        console.error('Access denied: Admin only');
+        toast.error('Access Denied: Admin privileges required');
       }
     } else {
-      console.error('API Error:', error.message);
+      console.error('Network Error:', error.message);
     }
     return Promise.reject(error);
   }

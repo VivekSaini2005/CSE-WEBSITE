@@ -24,9 +24,12 @@ import EventsList from "./pages/admin/events/EventsList.jsx";
 import AddEvent from "./pages/admin/events/AddEvent.jsx";
 import EditEvent from "./pages/admin/events/EditEvent.jsx";
 
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex flex-col min-h-screen bg-secondary font-body">
         <Navbar />
         <main className="grow container py-4 lg:py-6">

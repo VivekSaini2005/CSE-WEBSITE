@@ -18,11 +18,15 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      await login(form);
-      if (isAdmin) {
-        navigate('/admin');
-      } else {
-        navigate('/');
+      const res = await login(form);
+      const authData = res?.data || res;
+      
+      if (authData && authData.token) {
+        if (authData.user?.isAdmin) {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
       setError(err.message || 'Login failed');

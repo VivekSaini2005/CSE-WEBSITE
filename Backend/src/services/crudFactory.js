@@ -20,6 +20,20 @@ exports.getAll = (Model) =>
         );
     });
 
+exports.getOne = (Model) =>
+    asyncHandler(async (req, res) => {
+        const { id } = req.params;
+        const doc = await Model.findById(id);
+
+        if (!doc) {
+            throw new ApiError(404, "Document not found");
+        }
+
+        return res.status(200).json(
+            new ApiResponse(200, doc, "Document fetched successfully")
+        );
+    });
+
 exports.updateOne = (Model) =>
     asyncHandler(async (req, res) => {
         const { id } = req.params;

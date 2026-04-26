@@ -34,17 +34,22 @@ export function AuthProvider({ children }) {
   // Login function
   const login = async (data) => {
     const res = await loginUser(data);
-    if (res && res.token) {
-      localStorage.setItem('token', res.token);
-      setToken(res.token);
+    // Backend returns data in a 'data' field (ApiResponse structure)
+    const authData = res?.data || res; 
+    
+    if (authData && authData.token) {
+      localStorage.setItem('token', authData.token);
+      setToken(authData.token);
+      
       let userObj = null;
       let adminFlag = false;
-      if (res.user) {
-        userObj = res.user;
-        adminFlag = !!res.user.isAdmin;
+      
+      if (authData.user) {
+        userObj = authData.user;
+        adminFlag = !!authData.user.isAdmin;
       } else {
         try {
-          const decoded = jwtDecode(res.token);
+          const decoded = jwtDecode(authData.token);
           userObj = decoded.user || decoded;
           adminFlag = !!decoded.isAdmin;
         } catch {
@@ -52,6 +57,7 @@ export function AuthProvider({ children }) {
           adminFlag = false;
         }
       }
+      
       setUser(userObj);
       setIsAdmin(adminFlag);
       localStorage.setItem('user', JSON.stringify(userObj));

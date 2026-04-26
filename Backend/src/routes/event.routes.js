@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, eventController.createEvent);
 
 router.route('/:id')
+    .get(eventController.getEventById)
     .put(protect, isAdmin, eventController.updateEvent)
     .delete(protect, isAdmin, eventController.deleteEvent);
 
