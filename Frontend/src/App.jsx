@@ -32,6 +32,9 @@ const Resources = lazy(() => import("./pages/admin/materials/Resources.jsx"));
 const NewsList = lazy(() => import("./pages/admin/news/NewsList.jsx"));
 const AddNews = lazy(() => import("./pages/admin/news/AddNews.jsx"));
 const EditNews = lazy(() => import("./pages/admin/news/EditNews.jsx"));
+const GuideList = lazy(() => import("./pages/admin/guides/GuideList.jsx"));
+const AddGuide = lazy(() => import("./pages/admin/guides/AddGuide.jsx"));
+const EditGuide = lazy(() => import("./pages/admin/guides/EditGuide.jsx"));
 
 import { Toaster } from "react-hot-toast";
 
@@ -70,7 +73,9 @@ function App() {
                   <Route path="faculty" element={<FacultyList />} />
                   <Route path="faculty/add" element={<AddFaculty />} />
                   <Route path="faculty/edit/:id" element={<EditFaculty />} />
-                  <Route path="projects" element={<div>Projects Management</div>} />
+                  <Route path="guides" element={<GuideList />} />
+                  <Route path="guides/add" element={<AddGuide />} />
+                  <Route path="guides/edit/:id" element={<EditGuide />} />
                   <Route path="materials/semesters" element={<Semesters />} />
                   <Route path="materials/subjects" element={<Subjects />} />
                   <Route path="materials/resources" element={<Resources />} />

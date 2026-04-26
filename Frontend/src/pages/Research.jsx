@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchGuides } from "../api/admin/guideService";
 
 import researchAreas from "../data/researchAreasData";
 import publications from "../data/publicationsData";
 
 
 
-import projectGuideData from "../data/projectGuideData";
+// import projectGuideData from "../data/projectGuideData";
 
 const ProjectGuideCard = ({ guide }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -85,6 +86,29 @@ const ProjectGuideCard = ({ guide }) => {
 
 const Research = () => {
   const [activeTab, setActiveTab] = useState("All");
+  const [guides, setGuides] = useState([]);
+  const [loadingGuides, setLoadingGuides] = useState(false);
+  const [guidesError, setGuidesError] = useState(null);
+
+  useEffect(() => {
+    const loadGuides = async () => {
+      setLoadingGuides(true);
+      setGuidesError(null);
+      try {
+        const response = await fetchGuides();
+        setGuides(response.data || []);
+      } catch (err) {
+        console.error("Error fetching guides:", err);
+        setGuidesError("Failed to load project guides.");
+      } finally {
+        setLoadingGuides(false);
+      }
+    };
+
+    if (activeTab === "All" || activeTab === "Project Guide") {
+      loadGuides();
+    }
+  }, [activeTab]);
 
   const tabs = ["All", "Research Areas", "Publications", "Project Guide"];
 
@@ -182,9 +206,24 @@ const Research = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {projectGuideData.map((guide, idx) => (
-                <ProjectGuideCard key={idx} guide={guide} />
-              ))}
+              {loadingGuides ? (
+                <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4">
+                  <div className="w-12 h-12 border-4 border-slate-200 border-t-primary rounded-full animate-spin"></div>
+                  <p className="text-slate-500 font-medium">Fetching guides...</p>
+                </div>
+              ) : guidesError ? (
+                <div className="col-span-full py-10 text-center">
+                  <p className="text-red-500 font-medium">{guidesError}</p>
+                </div>
+              ) : guides.length === 0 ? (
+                <div className="col-span-full py-10 text-center">
+                  <p className="text-slate-400 italic">No project guides available at the moment.</p>
+                </div>
+              ) : (
+                guides.map((guide) => (
+                  <ProjectGuideCard key={guide._id} guide={guide} />
+                ))
+              )}
             </div>
           </div>
         )}
