@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, testimonialController.createTestimonial);
 
 router.route('/:id')
+    .get(testimonialController.getTestimonialById)
     .put(protect, isAdmin, testimonialController.updateTestimonial)
     .delete(protect, isAdmin, testimonialController.deleteTestimonial);
 

@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, syllabusController.createSyllabus);
 
 router.route('/:id')
+    .get(syllabusController.getSyllabusById)
     .put(protect, isAdmin, syllabusController.updateSyllabus)
     .delete(protect, isAdmin, syllabusController.deleteSyllabus);
 

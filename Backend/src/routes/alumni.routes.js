@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, alumniController.createAlumni);
 
 router.route('/:id')
+    .get(alumniController.getAlumniById)
     .put(protect, isAdmin, alumniController.updateAlumni)
     .delete(protect, isAdmin, alumniController.deleteAlumni);
 
