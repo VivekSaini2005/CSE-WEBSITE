@@ -112,7 +112,7 @@ Admin routes support POST, PUT, DELETE for CRUD operations.
 
 ## 🌍 Live Project
 
-- [Live Demo Link]()
+- [Live Demo Link](https://cse-website-ten.vercel.app/)
 
 ---
 
