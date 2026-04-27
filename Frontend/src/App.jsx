@@ -20,6 +20,7 @@ import StudyMaterials from "./pages/StudyMaterials";
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
 const AdminPanel = lazy(() => import("./pages/admin/AdminPanel"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard.jsx"));
 const AdminRoute = lazy(() => import("./routes/AdminRoute"));
 const FacultyList = lazy(() => import("./pages/admin/faculty/FacultyList.jsx"));
 const AddFaculty = lazy(() => import("./pages/admin/faculty/AddFaculty.jsx"));
@@ -82,7 +83,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminPanel />}>
-                  <Route index element={<div>Welcome to the Admin Dashboard</div>} />
+                  <Route index element={<Dashboard />} />
                   <Route path="events" element={<EventsList />} />
                   <Route path="events/add" element={<AddEvent />} />
                   <Route path="events/edit/:id" element={<EditEvent />} />
