@@ -18,5 +18,5 @@ export const formatDate = (date) => {
     day: 'numeric' 
   };
   
-  return d.toLocaleDateString('en-US', options);
+  return d.toLocaleDateString('en-GB', options);
 };

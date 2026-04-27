@@ -7,15 +7,21 @@ import Loader from "../components/common/Loader";
 
 const Achievements = () => {
   const [filter, setFilter] = useState("All");
-  const { data: rawAchievements, loading, error } = useFetch(getAchievements);
+  const { data: achievements, loading, error } = useFetch(getAchievements);
 
   const categories = ["All", "Students", "Faculty"];
 
-  const achievementList = rawAchievements || [];
+  const getBadgeStyles = (badge = "") => {
+    const b = badge.toLowerCase();
+    if (b.includes("hackathon") || b.includes("coding")) return "bg-blue-100 text-blue-700 border-blue-200";
+    if (b.includes("award") || b.includes("winner") || b.includes("first")) return "bg-green-100 text-green-700 border-green-200";
+    if (b.includes("research") || b.includes("publication")) return "bg-purple-100 text-purple-700 border-purple-200";
+    return "bg-amber-100 text-amber-700 border-amber-200";
+  };
 
   const filteredData = filter === "All" 
-    ? achievementList 
-    : achievementList.filter(item => item.category === filter);
+    ? (achievements || []) 
+    : (achievements || []).filter(item => item.category === filter);
 
   if (loading) return <Loader fullPage />;
 
@@ -71,16 +77,18 @@ const Achievements = () => {
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <span className="text-sm font-medium text-muted bg-slate-50 px-3 py-1 rounded border border-slate-100">
+                  <span className="text-xs font-bold text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
                     {formatDate(item.date)}
                   </span>
                   
-                  <span className="text-xs font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-1 rounded">
-                    {item.badge || 'Achievement'}
-                  </span>
+                  {item.badge && (
+                    <span className={`text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1.5 rounded-lg border shadow-sm ${getBadgeStyles(item.badge)}`}>
+                      {item.badge}
+                    </span>
+                  )}
                 </div>
                 
-                <h3 className="text-lg md:text-xl font-semibold font-heading text-primary mb-3 leading-tight group-hover:text-slate-800 transition-colors">
+                <h3 className="text-lg md:text-xl font-bold font-heading text-primary mb-3 leading-tight group-hover:text-indigo-600 transition-colors">
                   {item.title}
                 </h3>
                 

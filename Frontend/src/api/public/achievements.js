@@ -1,17 +1,10 @@
-import api from '../api';
+import api from "../api";
 
 /**
- * Public service for fetching student/faculty achievements
+ * Fetch all achievements for public display
+ * @returns {Promise<object>} - The API response data
  */
 export const getAchievements = async () => {
-  const response = await api.get('/achievements');
-  return response.data;
-};
-
-/**
- * Public service for fetching a single achievement by ID
- */
-export const getAchievementById = async (id) => {
-  const response = await api.get(`/achievements/${id}`);
+  const response = await api.get("/achievements");
   return response.data;
 };

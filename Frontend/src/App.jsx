@@ -24,12 +24,18 @@ const AdminRoute = lazy(() => import("./routes/AdminRoute"));
 const FacultyList = lazy(() => import("./pages/admin/faculty/FacultyList.jsx"));
 const AddFaculty = lazy(() => import("./pages/admin/faculty/AddFaculty.jsx"));
 const EditFaculty = lazy(() => import("./pages/admin/faculty/EditFaculty.jsx"));
+const AlumniList = lazy(() => import("./pages/admin/alumni/AlumniList.jsx"));
+const AddAlumni = lazy(() => import("./pages/admin/alumni/AddAlumni.jsx"));
+const EditAlumni = lazy(() => import("./pages/admin/alumni/EditAlumni.jsx"));
+const AchievementList = lazy(() => import("./pages/admin/achievements/AchievementList.jsx"));
+const AddAchievement = lazy(() => import("./pages/admin/achievements/AddAchievement.jsx"));
+const EditAchievement = lazy(() => import("./pages/admin/achievements/EditAchievement.jsx"));
 import EventsList from "./pages/admin/events/EventsList.jsx";
 import AddEvent from "./pages/admin/events/AddEvent.jsx";
 import EditEvent from "./pages/admin/events/EditEvent.jsx";
-const Semesters = lazy(() => import("./pages/admin/materials/Semesters.jsx"));
-const Subjects = lazy(() => import("./pages/admin/materials/Subjects.jsx"));
-const Resources = lazy(() => import("./pages/admin/materials/Resources.jsx"));
+const MaterialsList = lazy(() => import("./pages/admin/materials/MaterialsList.jsx"));
+const AddMaterial = lazy(() => import("./pages/admin/materials/AddMaterial.jsx"));
+const EditMaterial = lazy(() => import("./pages/admin/materials/EditMaterial.jsx"));
 const NewsList = lazy(() => import("./pages/admin/news/NewsList.jsx"));
 const AddNews = lazy(() => import("./pages/admin/news/AddNews.jsx"));
 const EditNews = lazy(() => import("./pages/admin/news/EditNews.jsx"));
@@ -80,6 +86,12 @@ function App() {
                   <Route path="events" element={<EventsList />} />
                   <Route path="events/add" element={<AddEvent />} />
                   <Route path="events/edit/:id" element={<EditEvent />} />
+                  <Route path="achievements" element={<AchievementList />} />
+                  <Route path="achievements/add" element={<AddAchievement />} />
+                  <Route path="achievements/edit/:id" element={<EditAchievement />} />
+                  <Route path="alumni" element={<AlumniList />} />
+                  <Route path="alumni/add" element={<AddAlumni />} />
+                  <Route path="alumni/edit/:id" element={<EditAlumni />} />
                   <Route path="news" element={<NewsList />} />
                   <Route path="news/add" element={<AddNews />} />
                   <Route path="news/edit/:id" element={<EditNews />} />
@@ -101,9 +113,9 @@ function App() {
                   <Route path="testimonials" element={<TestimonialList />} />
                   <Route path="testimonials/add" element={<AddTestimonial />} />
                   <Route path="testimonials/edit/:id" element={<EditTestimonial />} />
-                  <Route path="materials/semesters" element={<Semesters />} />
-                  <Route path="materials/subjects" element={<Subjects />} />
-                  <Route path="materials/resources" element={<Resources />} />
+                  <Route path="materials" element={<MaterialsList />} />
+                  <Route path="materials/add" element={<AddMaterial />} />
+                  <Route path="materials/edit/:id" element={<EditMaterial />} />
                 </Route>
               </Route>
             </Routes>

@@ -4,17 +4,16 @@ import { NavLink, Outlet } from 'react-router-dom';
 const sidebarLinks = [
   { to: '/admin', label: 'Dashboard', end: true },
   { to: '/admin/events', label: 'Events' },
+  { to: '/admin/achievements', label: 'Achievements' },
   { to: '/admin/news', label: 'News' },
   { to: '/admin/faculty', label: 'Faculty' },
   { to: '/admin/guides', label: 'Project Guides' },
   { to: '/admin/publications', label: 'Publications' },
   { to: '/admin/research-areas', label: 'Research Areas' },
+  { to: '/admin/alumni', label: 'Alumni' },
   { to: '/admin/syllabus', label: 'Syllabus' },
   { to: '/admin/testimonials', label: 'Testimonials' },
-  { separator: true, label: 'Study Materials' },
-  { to: '/admin/materials/semesters', label: 'Semesters' },
-  { to: '/admin/materials/subjects', label: 'Subjects' },
-  { to: '/admin/materials/resources', label: 'Resources' },
+  { to: '/admin/materials', label: 'Materials' },
 ];
 
 const AdminPanel = () => {

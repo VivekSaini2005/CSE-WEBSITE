@@ -2,18 +2,13 @@ import React from "react";
 import useFetch from "../hooks/useFetch";
 import { getSyllabus } from "../api/public/syllabus";
 import { getFileUrl } from "../utils/fileUtils";
+import Loader from "../components/common/Loader";
 
 const Syllabus = () => {
   const { data: rawSyllabus, loading, error } = useFetch(getSyllabus);
   const syllabusList = rawSyllabus || [];
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (loading) return <Loader fullPage />;
 
   if (error) {
     return (

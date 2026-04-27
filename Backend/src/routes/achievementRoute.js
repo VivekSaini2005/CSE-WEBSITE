@@ -9,6 +9,7 @@ router.route('/')
     .post(protect, isAdmin, achievementController.createAchievement);
 
 router.route('/:id')
+    .get(achievementController.getAchievementById)
     .put(protect, isAdmin, achievementController.updateAchievement)
     .delete(protect, isAdmin, achievementController.deleteAchievement);
 
