@@ -106,7 +106,7 @@ Admin routes support POST, PUT, DELETE for CRUD operations.
 
 - [Vivek Saini (GitHub)](https://github.com/VivekSaini2005)
 - [Abhinav (GitHub)](https://github.com/Abhinav8899)
-- [Ayush Singh (GitHub)](https://github.com/thakuraayush1710-create)
+- [Ayush Singh (GitHub)](https://github.com/ayushsingh1710)
 - [Aditya Singh (GitHub)](https://github.com/sageaditya)
 ---
 
