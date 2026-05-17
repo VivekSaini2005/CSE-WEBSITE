@@ -2,8 +2,8 @@ const Stats = () => {
   const stats = [
     { label: "Faculty Members", value: "10" },
     { label: "Students", value: "302" },
-    { label: "Research Papers", value: "165" },
-    { label: "Placements", value: "0%" },
+    { label: "Research Papers", value: "265" },
+    { label: "Placements", value: "56%" },
   ];
 
   return (
