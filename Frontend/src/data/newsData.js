@@ -16,7 +16,7 @@ const news = [
     title: "Alumni Meet & Tech Symposium",
     date: "February 10, 2026",
     description: "Connect with our distinguished alumni currently leading top tech corporations in a multi-day networking symposium."
-  }
+  },
   {
     id: 4,
     title: "SIH Hackathon 2026",
