@@ -4,7 +4,7 @@ const Card = ({ name, designation = "Professor", specialization, subject, image 
   return (
     <div className="group bg-white rounded-xl shadow-soft p-6 text-center border border-slate-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 flex flex-col items-center">
       
-      {/* Normalized Avatar Wrapper identical to Student layout */}
+      {/* Normalized Avatar Wrapper identical to  the Student layout */}
       <div className="w-20 h-20 mx-auto rounded-full mb-4 overflow-hidden shadow-sm border-4 border-slate-50 group-hover:border-primary/10 transition-colors">
         {image && image !== "" && !image.includes("placeholder") ? (
           <img
@@ -12,7 +12,7 @@ const Card = ({ name, designation = "Professor", specialization, subject, image 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onError={(e) => {
-              // Fallback explicitly to the raw SVG silhouette if image fetch fails
+              // Fallback explicitly to the raw SVG silhouette if  only image fetch fails
               e.target.style.display = 'none';
               e.target.nextElementSibling.style.display = 'flex';
             }}
