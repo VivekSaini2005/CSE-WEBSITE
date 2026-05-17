@@ -55,7 +55,9 @@ const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -82,7 +84,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -109,7 +113,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -136,7 +142,8 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -163,7 +170,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -190,7 +199,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -217,7 +228,8 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -244,7 +256,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -271,7 +285,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
@@ -298,7 +314,9 @@ export default publications;const publications = [
   }
 ];
 
-export default publications;const publications = [
+export default publications;
+
+const publications = [
   {
     title: "Federated Learning over Wireless Channels: A Distributed Optimization Perspective",
     authors: "Dr. Neha Verma, A. Kumar",
