@@ -20,8 +20,8 @@ const news = [
   {
     id: 4,
     title: "SIH Hackathon 2026",
-    date: "April 15, 2026",
-    description: "Join our flagship national level 48-hour hackathon to solve real-world problems. Great prizes and industry networking awaits."
+    date: "April 05, 2026",
+    description: "Join  national level 48-hour hackathon to solve real-world problems. Great prizes and industry networking awaits."
   },
 ];
 
