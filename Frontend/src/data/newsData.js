@@ -18,7 +18,7 @@ const news = [
     description: "Connect with our distinguished alumni currently leading top tech corporations in a multi-day networking symposium."
   }
   {
-    id: 1,
+    id: 4,
     title: "SIH Hackathon 2026",
     date: "April 15, 2026",
     description: "Join our flagship national level 48-hour hackathon to solve real-world problems. Great prizes and industry networking awaits."
