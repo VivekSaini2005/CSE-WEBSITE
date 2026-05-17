@@ -12,7 +12,7 @@ const achievementData = [
     title: "IEEE Excellence in Research Award",
     category: "Faculty",
     date: "January 2026",
-    description: "Awarded to Dr. Amit Sharma for outstanding foundational contributions to Artificial Intelligence.",
+    description: "Awarded to Dr. Namit Sharma for outstanding foundational contributions to Artificial Intelligence.",
     badge: "Award"
   },
   {
